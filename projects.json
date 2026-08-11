@@ -1,0 +1,11 @@
+{
+  "_comment": "Single source of truth for which projects the landing page is allowed to health-check. The page links live in index.html; each id here must match a data-project id there. Only URLs listed here are ever probed by the server (no open proxy).",
+  "projects": [
+    {
+      "id": "ferry-times-mobile",
+      "name": "Ferry Times Mobile",
+      "url": "/ferryTimesMobile",
+      "probe": "https://juliet.nyc/ferryTimesMobile"
+    }
+  ]
+}

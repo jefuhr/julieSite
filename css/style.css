@@ -164,7 +164,7 @@ body {
   margin: 0 auto;
   padding: 30px 24px 60px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: 310px minmax(0, 1fr); /* sidebar rides on the left */
   gap: 26px;
   align-items: start;
 }
@@ -316,6 +316,77 @@ figcaption { text-align: center; font-size: .82rem; color: var(--ink-soft); padd
 @media (max-width: 860px) { .sidebar { position: static; } }
 
 .dock { background: linear-gradient(180deg, #fff, var(--pink-100)); }
+
+/* ---- live now: links to things actually running ---- */
+
+.live-list { list-style: none; margin: 12px 0 0; padding: 0; }
+.live-list li + li { margin-top: 10px; }
+
+.live-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: 0 4px 0 var(--cyan);
+  transition: transform .14s ease, box-shadow .14s ease, background .14s ease;
+}
+.live-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 0 var(--cyan);
+  background: var(--pink-100);
+}
+.live-link:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+
+.live-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.live-name { font-weight: 700; font-size: .9rem; line-height: 1.25; }
+.live-url {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: .72rem;
+  color: var(--ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* status lamp, like a berth indicator */
+.dot {
+  flex: none;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 2.5px solid var(--ink);
+  background: #ece7ea;
+}
+.dot[data-state="up"] {
+  background: #34d17a;
+  box-shadow: 0 0 0 0 rgba(52, 209, 122, .7);
+  animation: pulse 2.4s ease-out infinite;
+}
+.dot[data-state="down"] { background: var(--red); }
+
+@keyframes pulse {
+  70%  { box-shadow: 0 0 0 8px rgba(52, 209, 122, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 209, 122, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dot[data-state="up"] { animation: none; }
+}
+
+.live-state {
+  flex: none;
+  font-size: .64rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  background: var(--foam);
+}
 
 .project { margin-top: 16px; }
 .project + .project { border-top: 3px dotted var(--pink-300); padding-top: 16px; }
