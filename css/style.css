@@ -59,15 +59,19 @@ body {
 .brand { display: flex; align-items: center; gap: 18px; }
 
 .kitty-mark {
-  width: 110px;
+  width: 116px;
+  height: auto;
   flex: none;
+  display: block;
   filter: drop-shadow(0 6px 0 rgba(232, 69, 95, .18));
+  transform-origin: 50% 80%;
+  animation: kitty-tilt 6s ease-in-out infinite;
 }
-.kitty-mark .bow { transform-origin: 100px 30px; animation: bow-wiggle 5s ease-in-out infinite; }
-@keyframes bow-wiggle {
-  0%, 84%, 100% { transform: rotate(0deg); }
-  88% { transform: rotate(-8deg); }
-  94% { transform: rotate(6deg); }
+/* every few seconds she leans, like the deck just shifted */
+@keyframes kitty-tilt {
+  0%, 78%, 100% { transform: rotate(0deg); }
+  84%           { transform: rotate(-5deg); }
+  92%           { transform: rotate(4deg); }
 }
 
 .brand-text h1 {
@@ -153,7 +157,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ferry, .kitty-mark .bow, .ferry .smoke { animation: none; }
+  .ferry, .kitty-mark, .ferry .smoke { animation: none; }
   .ferry { left: 8%; }
 }
 
