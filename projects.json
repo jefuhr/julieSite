@@ -5,7 +5,7 @@
       "id": "ferry-times-mobile",
       "name": "Ferry Times Mobile",
       "url": "/ferryTimesMobile",
-      "probe": "https://juliet.nyc/ferryTimesMobile"
+      "probe": "https://juliet.nyc/ferryTimesMobile/"
     }
   ]
 }

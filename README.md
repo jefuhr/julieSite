@@ -36,77 +36,47 @@ To add a project, do both halves:
    name, and a unique `data-project` id.
 2. **`projects.json`** — add an entry with that same `id` plus a `probe` URL.
 
-`projects.json` is an allowlist, not a config the page passes in: `/api/status` will
+`projects.json` is an allowlist, not a config the page passes in: `/_api/status` will
 only ever fetch URLs listed there, so the endpoint can't be used as an open proxy.
 Results are cached for 30s; the browser re-polls every 60s and on tab focus.
 
-> **Note:** `/ferryTimesMobile` returns 404 until the nginx change below is live, so
-> the lamp will read **down** until then. That's the health check working, not a bug.
-
 ## Deploying to the AWS box
 
-The plan: this landing page takes `/`, and the existing ferry board moves to
-`/ferryTimesMobile`.
+Already live. `juliet.nyc` runs two Node apps behind one nginx + certbot cert:
 
-**1. Run the landing page as a service** (`/etc/systemd/system/juliet-landing.service`):
+| Path | App | Port | Service |
+|---|---|---|---|
+| `/` | this landing page | 3000 | `juliet-landing.service` |
+| `/ferryTimesMobile/` | ferry departure display | 8090 | `nyc-ferry-did.service` |
 
-```ini
-[Unit]
-Description=juliet.nyc landing page
-After=network.target
-
-[Service]
-Type=simple
-User=www-data
-WorkingDirectory=/var/www/juliet.nyc
-Environment=NODE_ENV=production
-Environment=PORT=3000
-Environment=HOST=127.0.0.1
-ExecStart=/usr/bin/node server.js
-Restart=on-failure
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-```
+To ship a change:
 
 ```bash
-sudo systemctl daemon-reload
-sudo systemctl enable --now juliet-landing
+./deploy/deploy.sh            # sync code + restart the landing service
+./deploy/deploy.sh --nginx    # also reinstall the nginx site config
 ```
 
-**2. Point nginx at both apps:**
+The script tars the repo to `/opt/juliet-landing`, installs the systemd unit, waits
+for the service to answer, and curls both apps from the outside to prove nothing
+broke. The `--nginx` path backs up the live config first and aborts on `nginx -t`
+failure, so a bad config can't get loaded. Host and key come from `DEPLOY_HOST` /
+`DEPLOY_KEY` (defaults: `ubuntu@52.5.187.46`, `~/julie.pem`).
 
-```nginx
-server {
-    listen 443 ssl http2;
-    server_name juliet.nyc;
+### Why the routing looks the way it does
 
-    # landing page at the root
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_set_header Host              $host;
-        proxy_set_header X-Real-IP         $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
+The board was written to sit at a domain root: its HTML asks for `/app.js`,
+`/styles.css`, `/assets/…` and it fetches `/api/landings`, `/api/alerts`,
+`/api/realtime`, `/api/display-data`, `/api/override`. Moving it to a subpath would
+have broken every one of those.
 
-    # ferry board, moved off the root
-    location /ferryTimesMobile/ {
-        proxy_pass http://127.0.0.1:PORT_OF_THE_BOARD/;
-        proxy_set_header Host              $host;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-    location = /ferryTimesMobile {
-        return 301 /ferryTimesMobile/;
-    }
-}
-```
+Rather than patch the board, `deploy/nginx-juliet.nyc.conf` routes those root paths
+back to it, and the landing page stays out of their way — it uses `/css/`, `/js/`,
+`/images/` and `/_api/status`. **If you add a route to the landing page, keep clear of
+the board's paths above**, or the board will break.
 
-**3. Check the board tolerates the prefix.** The trailing slash on `proxy_pass`
-strips `/ferryTimesMobile` before forwarding, so the board still sees `/`. If it
-serves assets with absolute paths (`/styles.css`, `/assets/…` — which it currently
-does), those will 404 under the prefix. Two ways out: make the board emit relative
-paths / set a base href, or give those asset roots their own `location` blocks.
+Rollback: the nginx configs are backed up on the box as
+`/etc/nginx/sites-available/nyc-ferry-did.bak-<timestamp>`.
+
 
 ## Where to edit things
 

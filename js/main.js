@@ -27,7 +27,7 @@
   async function refresh() {
     let data;
     try {
-      const res = await fetch('/api/status', { headers: { accept: 'application/json' } });
+      const res = await fetch('/_api/status', { headers: { accept: 'application/json' } });
       if (!res.ok) throw new Error(`status ${res.status}`);
       data = await res.json();
     } catch {
