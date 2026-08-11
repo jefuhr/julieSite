@@ -6,8 +6,11 @@ Static HTML/CSS — no build step, no dependencies, no external requests (icons 
 Open `index.html` in a browser, or serve it:
 
 ```bash
-python3 -m http.server 8000   # then visit http://localhost:8000
+python3 -m http.server 8000 --bind 127.0.0.1   # then visit http://localhost:8000
 ```
+
+`--bind 127.0.0.1` keeps it on localhost only. Without it, `http.server` binds `0.0.0.0`
+and anyone on your network (or your WSL host) can reach the page.
 
 ## Where to edit things
 
