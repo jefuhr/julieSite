@@ -225,9 +225,17 @@ code {
 
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   margin-top: 18px;
+  align-items: start;
+}
+/* landscape shots get the full row so they aren't cropped to a stamp */
+.polaroid.wide { grid-column: 1 / -1; }
+
+@media (max-width: 520px) {
+  .gallery { grid-template-columns: 1fr; }
+  .polaroid.wide { grid-column: auto; }
 }
 
 .polaroid {
@@ -253,7 +261,16 @@ code {
   display: grid;
   place-items: center;
 }
-.frame img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 1; }
+.frame.ratio-wide { aspect-ratio: 4 / 3; }
+.frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+  z-index: 1;
+  object-fit: cover;
+  object-position: center 30%; /* bias the crop toward faces, not shoes */
+}
 .placeholder {
   position: absolute;
   font-weight: 700;
