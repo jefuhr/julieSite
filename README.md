@@ -52,15 +52,32 @@ Already live. `juliet.nyc` runs two Node apps behind one nginx + certbot cert:
 To ship a change:
 
 ```bash
-./deploy/deploy.sh            # sync code + restart the landing service
-./deploy/deploy.sh --nginx    # also reinstall the nginx site config
+./deploy/deploy.sh                 # test, back up, sync, restart, verify
+./deploy/deploy.sh --dry-run       # show what would change, touch nothing
+./deploy/deploy.sh --skip-tests    # skip the local smoke test
+./deploy/deploy.sh --branch fixes  # deploy a branch other than main
+./deploy/deploy.sh --nginx         # also reinstall the nginx site config
 ```
 
-The script tars the repo to `/opt/juliet-landing`, installs the systemd unit, waits
-for the service to answer, and curls both apps from the outside to prove nothing
-broke. The `--nginx` path backs up the live config first and aborts on `nginx -t`
-failure, so a bad config can't get loaded. Host and key come from `DEPLOY_HOST` /
-`DEPLOY_KEY` (defaults: `ubuntu@52.5.187.46`, `~/julie.pem`).
+**Commit first.** The script ships `git archive <branch>` — committed code only — so
+a half-finished edit in the checkout can't go out by accident. It warns about
+anything uncommitted before it starts.
+
+A run, in order: print the commits and diffstat between what's live and what you're
+shipping; check that every `data-project` id in `index.html` has a matching entry in
+`projects.json`; boot the committed tree on a scratch port and curl it (page, css,
+js, favicon, `/_api/status`, and a 404) — a failure here stops the deploy; tar
+`/opt/juliet-landing` to a timestamped backup; sync; delete files this branch removed
+since the last deploy; reinstall the systemd unit only if it changed; restart and
+wait for `127.0.0.1:3000`; then curl **both** apps from the outside. Anything that
+isn't a 200 aborts with the exact rollback command.
+
+The live commit is recorded on the box as `/opt/juliet-landing/DEPLOYED_SHA`, so
+re-running with nothing new exits immediately. The five most recent backups are kept.
+`--nginx` backs up the live config first and aborts on `nginx -t` failure, so a bad
+config can't get loaded. Host, key, repo, and branch come from `DEPLOY_HOST` /
+`DEPLOY_KEY` / `JULIET_REPO` / `JULIET_BRANCH` (defaults: `ubuntu@52.5.187.46`,
+`~/julie.pem`, this checkout, `main`).
 
 ### Why the routing looks the way it does
 
