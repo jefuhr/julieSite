@@ -6,6 +6,9 @@
  *                     the three most recent titles, linking into /blog/
  *   [data-posts]      the blog page itself — every post, in full
  *
+ * Post bodies are plain text apart from markdown [text](url) links; raw HTML
+ * is escaped, and only http(s), mailto, and same-site hrefs become anchors.
+ *
  * posts.json is the only place a post is written down. If the fetch fails
  * (page opened straight off disk, server down), each page keeps the static
  * fallback it shipped with and still links to /blog/.
@@ -39,6 +42,48 @@
     return node;
   }
 
+  /**
+   * Which hrefs a post is allowed to link to: the open web, mail, and
+   * anywhere on this site. Everything else (javascript:, data:, protocol
+   *-relative //host) is refused and the link renders as literal text.
+   */
+  function safeHref(url) {
+    if (/^https?:\/\//i.test(url) || /^mailto:/i.test(url)) return url;
+    if (/^#/.test(url)) return url;
+    if (/^\/(?!\/)/.test(url)) return url;
+    return null;
+  }
+
+  const LINK = /\[([^\]]+)\]\(([^)\s]+)\)/g;
+
+  /**
+   * One body paragraph. Markdown [text](url) becomes a real anchor; the
+   * surrounding prose is set as text nodes, so raw HTML in a post is
+   * escaped rather than rendered.
+   */
+  function paragraphNode(text) {
+    const p = document.createElement('p');
+    const source = String(text);
+    let last = 0;
+
+    for (let m; (m = LINK.exec(source)); ) {
+      const href = safeHref(m[2]);
+      if (last < m.index) p.append(source.slice(last, m.index));
+      if (href) {
+        const a = el('a', null, m[1]);
+        a.href = href;
+        p.append(a);
+      } else {
+        p.append(m[0]); // not a link we trust — leave the markdown as written
+      }
+      last = m.index + m[0].length;
+    }
+    LINK.lastIndex = 0;
+
+    if (last < source.length) p.append(source.slice(last));
+    return p;
+  }
+
   function headlineItem(post) {
     const li = document.createElement('li');
     const a = el('a', 'headline-link');
@@ -69,7 +114,7 @@
     article.append(h2);
 
     if (post.summary) article.append(el('p', 'post-summary', post.summary));
-    for (const paragraph of post.body || []) article.append(el('p', null, paragraph));
+    for (const paragraph of post.body || []) article.append(paragraphNode(paragraph));
 
     return article;
   }
