@@ -60,7 +60,20 @@ the landing page sidebar render from it. Add an entry and it shows up in both.
 }
 ```
 
-`body` is a list of paragraphs of plain text — no markdown, no HTML, no build step.
+`body` is a list of paragraphs. HTML in a post is escaped, not rendered — the one bit
+of markup that works is markdown-style links:
+
+```json
+"body": [
+  "Built [the ferry board](/ferryTimesMobile) — code is on [github](https://github.com/jefuhr).",
+  "Questions go to [my inbox](mailto:julietfuhr@gmail.com)."
+]
+```
+
+`http://`, `https://`, `mailto:` and same-site paths (`/blog/`, `#anchor`) become links;
+external ones open in a new tab. Any other scheme is left as literal text, so a post
+can't smuggle script into the page. Everything else in `body` is plain text.
+
 The sidebar card shows the three newest headlines and links each one to its anchor on
 the blog page; change `HEADLINE_COUNT` in `js/posts.js` for a different number.
 

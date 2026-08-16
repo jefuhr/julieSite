@@ -32,6 +32,45 @@
     return `${month} ${Number(m[3])}, ${m[1]}`;
   }
 
+  /**
+   * Turns markdown-style [text](url) into real links, leaving everything else
+   * as plain text. Only http(s), mailto and same-site paths are linked — any
+   * other scheme (javascript:, data:, …) stays as literal text, so a post can
+   * never smuggle script into the page.
+   */
+  const LINK_RE = /\[([^\]]+)\]\(([^)\s]+)\)/g;
+
+  function safeHref(url) {
+    if (/^(https?:|mailto:)/i.test(url)) return url;
+    if (/^[/#]/.test(url)) return url;      // /blog/, #anchor, /ferryTimesMobile
+    return null;                            // anything else isn't a link
+  }
+
+  function linkify(text, into) {
+    let last = 0;
+    for (const match of String(text).matchAll(LINK_RE)) {
+      const href = safeHref(match[2]);
+      if (href === null) continue;          // leave the raw [text](url) in place
+      if (match.index > last) into.append(String(text).slice(last, match.index));
+
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = match[1];
+      if (/^https?:/i.test(href)) {
+        a.target = '_blank';
+        a.rel = 'noopener';
+      }
+      into.append(a);
+      last = match.index + match[0].length;
+    }
+    into.append(String(text).slice(last));
+    return into;
+  }
+
+  function paragraph(text) {
+    return linkify(text, document.createElement('p'));
+  }
+
   function el(tag, className, text) {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -69,7 +108,7 @@
     article.append(h2);
 
     if (post.summary) article.append(el('p', 'post-summary', post.summary));
-    for (const paragraph of post.body || []) article.append(el('p', null, paragraph));
+    for (const text of post.body || []) article.append(paragraph(text));
 
     return article;
   }

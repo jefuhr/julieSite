@@ -1,5 +1,5 @@
 {
-  "_comment": "Single source of truth for the blog. The /blog page and the 'from the blog' card on the landing page both render from this file — add a post here and it shows up in both. Newest first; the page sorts by date anyway. 'body' is a list of paragraphs (plain text, no HTML).",
+  "_comment": "Single source of truth for the blog. The /blog page and the 'from the blog' card on the landing page both render from this file — add a post here and it shows up in both. Newest first; the page sorts by date anyway. 'body' is a list of paragraphs. HTML is escaped; markdown-style [text](url) links work.",
   "posts": [
     {
       "slug": "placeholder-first-post",
@@ -9,7 +9,8 @@
       "summary": "A short line that shows up under the headline. Swap this out for the real thing.",
       "body": [
         "This is a placeholder post so the blog has something in it. Edit posts.json to replace it.",
-        "Each string in \"body\" becomes its own paragraph. There's no markdown and no build step — what you type is what shows up."
+        "Each string in \"body\" becomes its own paragraph. There's no markdown and no build step — what you type is what shows up.",
+        "Links go in as [text](url), like [the ferry board](/ferryTimesMobile) or [my github](https://github.com/jefuhr). External links open in a new tab."
       ]
     },
     {
