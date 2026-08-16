@@ -1,0 +1,37 @@
+{
+  "_comment": "Single source of truth for the blog. The /blog page and the 'from the blog' card on the landing page both render from this file — add a post here and it shows up in both. Newest first; the page sorts by date anyway. 'body' is a list of paragraphs (plain text, no HTML).",
+  "posts": [
+    {
+      "slug": "placeholder-first-post",
+      "title": "Placeholder: the first post",
+      "date": "2026-08-10",
+      "tag": "ship log",
+      "summary": "A short line that shows up under the headline. Swap this out for the real thing.",
+      "body": [
+        "This is a placeholder post so the blog has something in it. Edit posts.json to replace it.",
+        "Each string in \"body\" becomes its own paragraph. There's no markdown and no build step — what you type is what shows up."
+      ]
+    },
+    {
+      "slug": "placeholder-second-post",
+      "title": "Placeholder: something about boats",
+      "date": "2026-07-28",
+      "tag": "boats",
+      "summary": "Another placeholder. Delete it once there's a real post to put here.",
+      "body": [
+        "Posts are sorted newest first by the \"date\" field, which is a plain YYYY-MM-DD string.",
+        "The landing page shows the three most recent headlines; the blog page shows all of them."
+      ]
+    },
+    {
+      "slug": "placeholder-third-post",
+      "title": "Placeholder: notes from the yard",
+      "date": "2026-07-02",
+      "tag": "notes",
+      "summary": "The third one, so the headline list on the landing page has something to fill up with.",
+      "body": [
+        "Every post gets an anchor at /blog/#slug, so headlines on the landing page link straight to the post."
+      ]
+    }
+  ]
+}

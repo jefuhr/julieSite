@@ -60,7 +60,7 @@ if [[ "${1:-}" == "--nginx" ]]; then
 fi
 
 echo "→ verifying from the outside"
-for path in / /ferryTimesMobile/ /app.js /styles.css /api/landings; do
+for path in / /blog/ /ferryTimesMobile/ /app.js /styles.css /api/landings; do
   code=$(curl -sS -o /dev/null -w '%{http_code}' "https://juliet.nyc${path}")
   printf '   %-22s %s\n' "$path" "$code"
 done

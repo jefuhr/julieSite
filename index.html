@@ -64,7 +64,7 @@
 <div class="layout">
 
   <!-- ============ sidebar (left) ============ -->
-  <aside class="sidebar" aria-label="Projects">
+  <aside class="sidebar" aria-label="Projects and writing">
 
     <!-- live / running -->
     <div class="card dock">
@@ -87,46 +87,16 @@
       </ul>
     </div>
 
-    <!-- in progress -->
+    <!-- latest from the blog -->
     <div class="card dock">
-      <h2 class="card-title small"><span class="bowdot"></span>in the yard</h2>
+      <h2 class="card-title small"><span class="bowdot"></span>from the blog</h2>
+      <p class="micro">latest out of the ship log</p>
 
-      <div class="project">
-        <div class="project-head">
-          <span class="repo">DiD</span>
-          <span class="chip">4 open branches</span>
-        </div>
-        <ul class="branches">
-          <li>
-            <span class="branch-name">feat/placeholder-one</span>
-            <span class="badge wip">wip</span>
-            <p class="branch-note">Short note about what this branch does.</p>
-          </li>
-          <li>
-            <span class="branch-name">feat/placeholder-two</span>
-            <span class="badge review">review</span>
-            <p class="branch-note">Waiting on a second pair of eyes.</p>
-          </li>
-          <li>
-            <span class="branch-name">fix/placeholder-three</span>
-            <span class="badge blocked">blocked</span>
-            <p class="branch-note">Blocked on an upstream thing.</p>
-          </li>
-          <li>
-            <span class="branch-name">chore/placeholder-four</span>
-            <span class="badge idle">idle</span>
-            <p class="branch-note">Picked up when there's time.</p>
-          </li>
-        </ul>
-      </div>
+      <!-- filled from posts.json by js/posts.js; edit posts, not this list -->
+      <ol class="headlines" data-headlines hidden></ol>
+      <p class="micro" data-headlines-fallback>the posts live at <a href="/blog/">/blog</a>.</p>
 
-      <div class="project">
-        <div class="project-head">
-          <span class="repo">next thing</span>
-          <span class="chip">soon</span>
-        </div>
-        <p class="branch-note">soon tm</p>
-      </div>
+      <a class="all-posts" href="/blog/">all posts <span aria-hidden="true">→</span></a>
     </div>
 
     <div class="card ticket">
@@ -237,6 +207,7 @@
 </footer>
 
 <script src="js/main.js" defer></script>
+<script src="js/posts.js" defer></script>
 
 </body>
 </html>

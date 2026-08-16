@@ -290,7 +290,7 @@ code {
 .mail-link:hover .go { color: var(--red); transform: translateX(3px); }
 
 @media (prefers-reduced-motion: reduce) {
-  .mail-link, .mail-link .go, .live-link, .social { transition: none; }
+  .mail-link, .mail-link .go, .live-link, .headline-link, .social { transition: none; }
 }
 
 /* ---------------- gallery ---------------- */
@@ -477,24 +477,7 @@ figcaption { text-align: center; font-size: .82rem; color: var(--ink-soft); padd
   background: var(--foam);
 }
 
-.project { margin-top: 16px; }
-.project + .project { border-top: 3px dotted var(--pink-300); padding-top: 16px; }
-
-.project-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.repo {
-  font-weight: 800;
-  font-size: 1rem;
-  background: var(--ink);
-  color: #fff;
-  border-radius: 8px;
-  padding: 3px 10px;
-}
+/* small pill used on post tags */
 .chip {
   font-size: .74rem;
   font-weight: 700;
@@ -505,51 +488,89 @@ figcaption { text-align: center; font-size: .82rem; color: var(--ink-soft); padd
   padding: 2px 9px;
 }
 
-.branches { list-style: none; margin: 0; padding: 0; }
-.branches li {
-  position: relative;
-  padding: 8px 0 8px 20px;
-  border-left: 3px solid var(--pink-300);
-  margin-left: 6px;
-}
-/* mooring dot on the branch line */
-.branches li::before {
-  content: "";
-  position: absolute;
-  left: -8px; top: 15px;
-  width: 11px; height: 11px;
-  border-radius: 50%;
+/* ---- from the blog: headlines pulled out of posts.json ---- */
+
+.headlines { list-style: none; margin: 12px 0 0; padding: 0; }
+.headlines li + li { margin-top: 10px; }
+
+.headline-link {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 11px 12px;
   background: #fff;
-  border: 3px solid var(--pink-500);
-}
-
-.branch-name {
-  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-  font-size: .82rem;
-  background: var(--pink-200);
-  border-radius: 5px;
-  padding: 1px 6px;
-  word-break: break-all;
-}
-
-.badge {
-  display: inline-block;
-  margin-left: 6px;
-  font-size: .66rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: .4px;
-  padding: 2px 7px;
-  border-radius: 999px;
   border: 2px solid var(--ink);
-  vertical-align: 1px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .12s ease, box-shadow .12s ease;
 }
-.badge.wip     { background: #ffe8b3; }
-.badge.review  { background: var(--foam); }
-.badge.blocked { background: var(--pink-300); }
-.badge.idle    { background: #ece7ea; }
+.headline-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 var(--pink-300);
+}
+.headline-link:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
 
-.branch-note { margin: 4px 0 0; font-size: .82rem; color: var(--ink-soft); }
+.headline-date {
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+.headline-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.headline-title { font-weight: 700; font-size: .92rem; line-height: 1.3; }
+.headline-summary { font-size: .8rem; color: var(--ink-soft); line-height: 1.4; }
+
+.all-posts {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: .84rem;
+  font-weight: 700;
+  color: var(--red);
+  text-decoration: none;
+  border-bottom: 2px dotted var(--pink-400);
+}
+.all-posts:hover { border-bottom-style: solid; }
+
+/* ---- the blog page ---- */
+
+.blog-layout { display: block; max-width: 760px; }
+
+.posts .post {
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 26px;
+  box-shadow: var(--shadow);
+  scroll-margin-top: 20px;
+}
+
+.post-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.post-date {
+  font-size: .74rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.post-title { margin: 0 0 10px; font-size: 1.4rem; line-height: 1.25; }
+.post-title a { color: inherit; text-decoration: none; }
+.post-title a:hover { color: var(--red); }
+
+.post-summary {
+  font-weight: 700;
+  color: var(--ink-soft);
+  border-left: 3px solid var(--pink-300);
+  padding-left: 12px;
+}
 
 /* ---------------- ferry ticket ---------------- */
 

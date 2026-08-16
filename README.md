@@ -18,10 +18,13 @@ facing the network directly instead of sitting behind nginx.
 
 ```
 index.html      the page
+blog/index.html the blog ("ship log")
 css/style.css   all styling (colors live in :root at the top)
 js/main.js      status-dot polling — progressive enhancement, page works without it
+js/posts.js     renders blog headlines (landing) and full posts (/blog)
 server.js       static server + /api/status
 projects.json   which projects get health-checked
+posts.json      the blog posts themselves
 images/         your photos go here (see images/README.md)
 ```
 
@@ -40,13 +43,37 @@ To add a project, do both halves:
 only ever fetch URLs listed there, so the endpoint can't be used as an open proxy.
 Results are cached for 30s; the browser re-polls every 60s and on tab focus.
 
+## The blog
+
+`/blog/` is the blog. Every post lives in **`posts.json`** — that file is the only
+place a post is written down, and both the blog page and the "from the blog" card in
+the landing page sidebar render from it. Add an entry and it shows up in both.
+
+```json
+{
+  "slug": "hello-harbor",        // anchor: /blog/#hello-harbor
+  "title": "Hello, harbor",
+  "date": "2026-08-10",          // YYYY-MM-DD; posts sort newest first
+  "tag": "ship log",             // optional pill next to the date
+  "summary": "One line, shown under the headline on the landing page.",
+  "body": ["First paragraph.", "Second paragraph."]
+}
+```
+
+`body` is a list of paragraphs of plain text — no markdown, no HTML, no build step.
+The sidebar card shows the three newest headlines and links each one to its anchor on
+the blog page; change `HEADLINE_COUNT` in `js/posts.js` for a different number.
+
+Rendering happens in the browser, so with JavaScript off the blog page points at
+`posts.json` and the sidebar card falls back to a plain link to `/blog/`.
+
 ## Deploying to the AWS box
 
 Already live. `juliet.nyc` runs two Node apps behind one nginx + certbot cert:
 
 | Path | App | Port | Service |
 |---|---|---|---|
-| `/` | this landing page | 3000 | `juliet-landing.service` |
+| `/` and `/blog/` | this landing page | 3000 | `juliet-landing.service` |
 | `/ferryTimesMobile/` | ferry departure display | 8090 | `nyc-ferry-did.service` |
 
 To ship a change:
@@ -71,7 +98,7 @@ have broken every one of those.
 
 Rather than patch the board, `deploy/nginx-juliet.nyc.conf` routes those root paths
 back to it, and the landing page stays out of their way — it uses `/css/`, `/js/`,
-`/images/` and `/_api/status`. **If you add a route to the landing page, keep clear of
+`/images/`, `/blog/`, `/posts.json` and `/_api/status`. **If you add a route to the landing page, keep clear of
 the board's paths above**, or the board will break.
 
 Rollback: the nginx configs are backed up on the box as
@@ -86,7 +113,7 @@ Rollback: the nginx configs are backed up on the box as
 | Social links | `index.html` → `.socials` (Instagram + LinkedIn still say `YOUR_HANDLE`) |
 | Photos | drop files in `images/` — see `images/README.md` |
 | Live project links | `index.html` → `.live-list` **and** `projects.json` |
-| In-progress branches | `index.html` → `.project` blocks |
+| Blog posts | `posts.json` |
 | Colors | `css/style.css` → `:root` |
 
 ## Ferry bits
