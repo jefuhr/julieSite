@@ -183,4 +183,5 @@ Rollback: the nginx configs are backed up on the box as
 - The "service status" card is a joke departure board using real route codes (ER / RW / SB / SV).
 - The sidebar ends in a punch-out ferry ticket.
 - 404s say you missed the boat.
-- All motion is disabled under `prefers-reduced-motion`.
+- Under `prefers-reduced-motion` the ferry still makes her crossing, just slowly (90s) and
+  on a flat sea; everything else holds still.

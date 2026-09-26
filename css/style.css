@@ -275,7 +275,6 @@ code {
 	height: 96px;
 	margin-top: 10px;
 	overflow: hidden;
-	container-type: inline-size;
 	view-transition-name: harbor;
 }
 
@@ -283,21 +282,23 @@ code {
 .waves .wave-back  { fill: var(--wave-back); }
 .waves .wave-front { fill: var(--wave-front); }
 
+/* .ferry is a lane as wide as the harbor, so translateX(100%) is exactly one
+   crossing at any screen width. She leaves 30% of the way across so there's
+   a boat on screen the moment the page opens. */
 .ferry {
+	--crossing: 26s;
 	position: absolute;
+	inset-inline: 0;
 	bottom: 30px;
-	left: 0;
-	width: 116px;
-	animation: sail 26s linear infinite;
+	animation: sail var(--crossing) linear calc(var(--crossing) * -.3) infinite;
 }
-.ferry svg { width: 100%; display: block; animation: bob 3.2s ease-in-out infinite; }
+.ferry svg { width: 116px; display: block; animation: bob 3.2s ease-in-out infinite; }
 .ferry .smoke { animation: puff 2.4s ease-in-out infinite; }
 .ferry .portholes { fill: var(--portholes); }
 
-/* cqw is the harbor's own width, so she always sails the whole way across */
 @keyframes sail {
-	from { translate: -140px 0; }
-	to   { translate: 100cqw 0; }
+	from { transform: translateX(-140px); }
+	to   { transform: translateX(100%); }
 }
 @keyframes bob {
 	0%, 100% { transform: translateY(0) rotate(-1.5deg); }
@@ -848,12 +849,14 @@ footer a { font-weight: 700; }
 
 @view-transition { navigation: auto; }
 
-/* ---------------- less motion, please ---------------- */
+/* ---------------- less motion, please ----------------
+   Reduced, not removed: the ferry still makes its crossing, just slowly and
+   on a flat sea. Everything else holds still. */
 
 @media (prefers-reduced-motion: reduce) {
 	@view-transition { navigation: none; }
 
-	.ferry { animation: none; translate: 8cqw 0; }
+	.ferry { --crossing: 90s; }
 	.ferry svg,
 	.ferry .smoke,
 	.kitty-mark,
