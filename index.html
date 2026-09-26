@@ -5,209 +5,244 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>juliet · hello harbor</title>
 <meta name="description" content="Julie's personal page — pink, bow-forward, and slightly nautical.">
-<link rel="stylesheet" href="css/style.css">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ff9dbb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1b1238" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://juliet.nyc/">
+<meta property="og:title" content="juliet · hello harbor">
+<meta property="og:description" content="Julie's personal page — pink, bow-forward, and slightly nautical.">
+<link rel="canonical" href="https://juliet.nyc/">
+<link rel="stylesheet" href="css/style.css?v=3">
 <link rel="icon" type="image/png" href="images/favicon.png?v=2">
 </head>
 <body>
 
 <!-- ============ header ============ -->
 <header class="masthead">
-  <div class="masthead-inner">
-    <div class="brand">
-      <!-- kitty mark -->
-      <img class="kitty-mark" src="images/hello-kitty.png?v=2" alt="" width="768" height="538" aria-hidden="true">
-      <div class="brand-text">
-        <h1>juliet</h1>
-        <p class="tagline">building things · riding boats · <span class="pill">being&nbsp;cute</span></p>
-      </div>
-    </div>
+	<div class="masthead-inner">
+		<div class="brand">
+			<!-- kitty mark -->
+			<img class="kitty-mark" src="images/hello-kitty.png?v=2" alt="" width="768" height="538" aria-hidden="true" fetchpriority="high">
+			<div class="brand-text">
+				<h1>juliet</h1>
+				<p class="tagline">building things · riding boats · <span class="pill">being&nbsp;cute</span></p>
+			</div>
+		</div>
 
-    <!-- ferry-terminal style social links -->
-    <nav class="socials" aria-label="Social links">
-      <a class="social" href="https://instagram.com/julietfuhr8" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle class="dot" cx="17.6" cy="6.4" r="1.3"/></svg>
-        <span>Instagram</span>
-      </a>
-      <a class="social" href="https://github.com/jefuhr" target="_blank" rel="noopener" aria-label="GitHub">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2a9.8 9.8 0 0 0-3.1 19.1c.5.1.7-.2.7-.5v-1.9c-2.7.6-3.3-1.2-3.3-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.2-4.5-1.1-4.5-4.9 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.3.2 2.3.1 2.6.6.7 1 1.6 1 2.7 0 3.8-2.3 4.7-4.5 4.9.4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A9.8 9.8 0 0 0 12 2.2Z"/></svg>
-        <span>GitHub</span>
-      </a>
-      <a class="social" href="https://linkedin.com/in/julietfuhr" target="_blank" rel="noopener" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="4"/><path class="fillmark" d="M7.5 10v7M7.5 7.2v.1M11.5 17v-4a2.5 2.5 0 0 1 5 0v4"/></svg>
-        <span>LinkedIn</span>
-      </a>
-    </nav>
-  </div>
+		<!-- ferry-terminal style social links -->
+		<nav class="socials" aria-label="Social links">
+			<a class="social" href="https://instagram.com/julietfuhr8" target="_blank" rel="noopener">
+				<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle class="fill" cx="17.6" cy="6.4" r="1.3"/></svg>
+				<span>Instagram</span>
+			</a>
+			<a class="social" href="https://github.com/jefuhr" target="_blank" rel="noopener">
+				<svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M12 2.2a9.8 9.8 0 0 0-3.1 19.1c.5.1.7-.2.7-.5v-1.9c-2.7.6-3.3-1.2-3.3-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.2-4.5-1.1-4.5-4.9 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.3.2 2.3.1 2.6.6.7 1 1.6 1 2.7 0 3.8-2.3 4.7-4.5 4.9.4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A9.8 9.8 0 0 0 12 2.2Z"/></svg>
+				<span>GitHub</span>
+			</a>
+			<a class="social" href="https://linkedin.com/in/julietfuhr" target="_blank" rel="noopener">
+				<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="4"/><path d="M7.5 10v7M7.5 7.2v.1M11.5 17v-4a2.5 2.5 0 0 1 5 0v4"/></svg>
+				<span>LinkedIn</span>
+			</a>
+		</nav>
+	</div>
 
-  <!-- harbor: animated ferry on the wave line -->
-  <div class="harbor" aria-hidden="true">
-    <div class="ferry">
-      <svg viewBox="0 0 140 70">
-        <path class="smoke" d="M84 24 q6 -8 0 -14" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"/>
-        <rect x="30" y="26" width="66" height="18" rx="4" fill="#fff" stroke="#3b2b33" stroke-width="3"/>
-        <rect x="52" y="12" width="30" height="16" rx="3" fill="#fff" stroke="#3b2b33" stroke-width="3"/>
-        <path d="M14 44 h112 l-14 16 H28 Z" fill="#0b3d91" stroke="#3b2b33" stroke-width="3" stroke-linejoin="round"/>
-        <g fill="#00a9e0"><rect x="58" y="17" width="6" height="6"/><rect x="70" y="17" width="6" height="6"/></g>
-        <g fill="#e8455f"><rect x="36" y="31" width="7" height="8" rx="1"/><rect x="50" y="31" width="7" height="8" rx="1"/><rect x="64" y="31" width="7" height="8" rx="1"/><rect x="78" y="31" width="7" height="8" rx="1"/></g>
-        <path d="M92 44 v-8" stroke="#3b2b33" stroke-width="3"/>
-        <path d="M92 36 q10 3 0 6 Z" fill="#ffb3c9" stroke="#3b2b33" stroke-width="2.5" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <svg class="waves" viewBox="0 0 1440 90" preserveAspectRatio="none">
-      <path d="M0 46 q60 -22 120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 v44 H0 Z" fill="#bfe8fb"/>
-      <path d="M0 60 q60 -20 120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 v30 H0 Z" fill="#7fd0f2"/>
-    </svg>
-  </div>
+	<!-- harbor: animated ferry on the wave line -->
+	<div class="harbor" aria-hidden="true">
+		<div class="ferry">
+			<svg viewBox="0 0 140 70">
+				<path class="smoke" d="M84 24 q6 -8 0 -14" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+				<rect x="30" y="26" width="66" height="18" rx="4" fill="#fff" stroke="#3b2b33" stroke-width="3"/>
+				<rect x="52" y="12" width="30" height="16" rx="3" fill="#fff" stroke="#3b2b33" stroke-width="3"/>
+				<path d="M14 44 h112 l-14 16 H28 Z" fill="#0b3d91" stroke="#3b2b33" stroke-width="3" stroke-linejoin="round"/>
+				<g fill="#00a9e0"><rect x="58" y="17" width="6" height="6"/><rect x="70" y="17" width="6" height="6"/></g>
+				<g class="portholes" fill="#e8455f"><rect x="36" y="31" width="7" height="8" rx="1"/><rect x="50" y="31" width="7" height="8" rx="1"/><rect x="64" y="31" width="7" height="8" rx="1"/><rect x="78" y="31" width="7" height="8" rx="1"/></g>
+				<path d="M92 44 v-8" stroke="#3b2b33" stroke-width="3"/>
+				<path d="M92 36 q10 3 0 6 Z" fill="#ffb3c9" stroke="#3b2b33" stroke-width="2.5" stroke-linejoin="round"/>
+			</svg>
+		</div>
+		<svg class="waves" viewBox="0 0 1440 90" preserveAspectRatio="none">
+			<path class="wave-back" d="M0 46 q60 -22 120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 v44 H0 Z" fill="#bfe8fb"/>
+			<path class="wave-front" d="M0 60 q60 -20 120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 v30 H0 Z" fill="#7fd0f2"/>
+		</svg>
+	</div>
 </header>
 
 <!-- ============ body ============ -->
 <div class="layout">
 
-  <!-- ============ sidebar (left) ============ -->
-  <aside class="sidebar" aria-label="Projects and writing">
+	<!-- ============ sidebar (left) ============ -->
+	<aside class="sidebar" aria-label="Projects and writing">
 
-    <!-- live / running -->
-    <div class="card dock">
-      <h2 class="card-title small"><span class="bowdot"></span>live now</h2>
-      <p class="micro">running on the juliet.nyc box</p>
+		<!-- live / running -->
+		<div class="card dock">
+			<h2 class="card-title small"><span class="bowdot"></span>live now</h2>
+			<p class="micro">running on the juliet.nyc box</p>
 
-      <ul class="live-list">
-        <li>
-          <a class="live-link" href="/ferryTimesMobile" data-project="ferry-times-mobile">
-            <span class="dot" data-state="unknown" aria-hidden="true"></span>
-            <span class="live-body">
-              <span class="live-name">Ferry Times Mobile</span>
-              <span class="live-url">/ferryTimesMobile</span>
-            </span>
-            <span class="live-state" data-state-label>live</span>
-          </a>
-        </li>
-        <!-- copy this <li> for the next thing you ship, and add a matching
-             entry to projects.json so the status dot works -->
-      </ul>
-    </div>
+			<ul class="live-list">
+				<li>
+					<a class="live-link" href="/ferryTimesMobile" data-project="ferry-times-mobile">
+						<span class="dot" data-state="unknown" aria-hidden="true"></span>
+						<span class="live-body">
+							<span class="live-name">Ferry Times Mobile</span>
+							<span class="live-url">/ferryTimesMobile</span>
+						</span>
+						<span class="live-state" data-state-label>live</span>
+					</a>
+				</li>
+				<!-- copy this <li> for the next thing you ship, and add a matching
+				     entry to projects.json so the status dot works -->
+			</ul>
 
-    <!-- latest from the blog -->
-    <div class="card dock">
-      <h2 class="card-title small"><span class="bowdot"></span>from the blog</h2>
-      <p class="micro">latest out of the ship log</p>
+			<!-- downloads: the link goes to the install docs, the lamp watches
+			     the installer the box serves at /lb/install.sh -->
+			<p class="dock-label">downloads</p>
+			<ul class="live-list">
+				<li>
+					<a class="live-link" href="https://github.com/jefuhr/lb#install" data-project="lb" target="_blank" rel="noopener">
+						<span class="dot" data-state="unknown" aria-hidden="true"></span>
+						<span class="live-body">
+							<span class="live-name">lb</span>
+							<span class="live-desc">a boat sails across your terminal</span>
+						</span>
+						<span class="live-state get">
+							<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.5v6.8M3 5.6l3 3 3-3M2.2 10.6h7.6"/></svg>
+							download
+						</span>
+					</a>
+					<div class="term">
+						<div class="term-bar">
+							<span class="lights" aria-hidden="true"><span></span><span></span><span></span></span>
+							<span class="term-os">macOS · Linux</span>
+							<button class="copy" type="button" data-copy="lb-install" aria-live="polite" hidden>copy</button>
+						</div>
+						<code id="lb-install">curl -fsSL https://juliet.nyc/lb/install.sh <span class="nowrap">| sh</span></code>
+					</div>
+				</li>
+			</ul>
+		</div>
 
-      <!-- filled from posts.json by js/posts.js; edit posts, not this list -->
-      <ol class="headlines" data-headlines hidden></ol>
-      <p class="micro" data-headlines-fallback>the posts live at <a href="/blog/">/blog</a>.</p>
+		<!-- latest from the blog -->
+		<div class="card dock">
+			<h2 class="card-title small"><span class="bowdot"></span>from the blog</h2>
+			<p class="micro">latest out of the ship log</p>
 
-      <a class="all-posts" href="/blog/">all posts <span aria-hidden="true">→</span></a>
-    </div>
+			<!-- filled from posts.json by js/posts.js; edit posts, not this list -->
+			<ol class="headlines" data-headlines hidden></ol>
+			<p class="micro" data-headlines-fallback>the posts live at <a href="/blog/">/blog</a>.</p>
 
-    <div class="card ticket">
-      <div class="ticket-top">
-        <span>NYC&nbsp;FERRY</span><span>♡</span>
-      </div>
-      <p class="ticket-big">ONE&nbsp;RIDE / PROMOCODE: penguin2026</p>
-      <p class="micro">good for one (1) trip across the river, or one (1) juciy hug</p>
-      <div class="perf"></div>
-      <p class="ticket-code">JULIE · 2026</p>
-    </div>
-  </aside>
+			<a class="all-posts" href="/blog/">all posts <span aria-hidden="true">→</span></a>
+		</div>
 
-  <main>
-    <!-- about -->
-    <section class="card" id="about">
-      <h2 class="card-title"><span class="bowdot"></span>hello there</h2>
-      <p>
-        Hi, I'm Julie. This is my page. I do boat stuff.;
-      </p>
-      <p class="micro">
-        ⚓ Currently: <strong>doing so much digital signage fr </strong> · 📍 New York, NY
-      </p>
-    </section>
+		<div class="card ticket">
+			<div class="ticket-top">
+				<span>NYC&nbsp;FERRY</span><span>♡</span>
+			</div>
+			<p class="ticket-big">ONE&nbsp;RIDE / PROMOCODE: penguin2026</p>
+			<p class="micro">good for one (1) trip across the river, or one (1) juicy hug</p>
+			<div class="perf"></div>
+			<p class="ticket-code">JULIE · 2026</p>
+		</div>
+	</aside>
 
-    <!-- contact -->
-    <section class="card" id="contact">
-      <h2 class="card-title"><span class="bowdot"></span>drop me a line</h2>
-      <ul class="mail-list">
-        <li>
-          <a class="mail-link" href="mailto:juliet@ferry.nyc">
-            <svg class="env" viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="2.5" y="5" width="19" height="14" rx="3"/>
-              <path d="M3.5 7l8.5 6.5L20.5 7"/>
-            </svg>
-            <span class="mail-body">
-              <span class="mail-addr">juliet@ferry.nyc</span>
-              <span class="mail-tag">boats &amp; business</span>
-            </span>
-            <span class="go" aria-hidden="true">→</span>
-          </a>
-        </li>
-        <li>
-          <a class="mail-link" href="mailto:julietfuhr@gmail.com">
-            <svg class="env" viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="2.5" y="5" width="19" height="14" rx="3"/>
-              <path d="M3.5 7l8.5 6.5L20.5 7"/>
-            </svg>
-            <span class="mail-body">
-              <span class="mail-addr">julietfuhr@gmail.com</span>
-              <span class="mail-tag">everything else</span>
-            </span>
-            <span class="go" aria-hidden="true">→</span>
-          </a>
-        </li>
-      </ul>
-    </section>
+	<main>
+		<!-- about -->
+		<section class="card" id="about">
+			<h2 class="card-title"><span class="bowdot"></span>hello there</h2>
+			<p>
+				Hi, I'm Julie. This is my page. I do boat stuff.
+			</p>
+			<p class="micro">
+				⚓ Currently: <strong>doing so much digital signage fr</strong> · 📍 New York, NY
+			</p>
+		</section>
 
-    <!-- photos -->
-    <section class="card" id="photos">
-      <h2 class="card-title"><span class="bowdot"></span>me, probably on a boat</h2>
-      <div class="gallery">
-        <figure class="polaroid wide">
-          <div class="frame ratio-wide">
-            <img src="images/IMG_3716.jpg" alt="Julie" width="1170" height="863" loading="lazy"
-                 onerror="this.closest('.frame').classList.add('empty'); this.remove();">
-            <span class="placeholder">photo missing</span>
-          </div>
-          <figcaption>mcdreamy my beloved ♡</figcaption>
-        </figure>
-        <figure class="polaroid tilt-a">
-          <div class="frame">
-            <img src="images/IMG_3738.JPG" alt="Julie" width="512" height="911" loading="lazy"
-                 onerror="this.closest('.frame').classList.add('empty'); this.remove();">
-            <span class="placeholder">photo missing</span>
-          </div>
-          <figcaption>im a model</figcaption>
-        </figure>
-        <figure class="polaroid tilt-b">
-          <div class="frame">
-            <img src="images/IMG_3860.jpg" alt="Julie" width="674" height="911" loading="lazy"
-                 onerror="this.closest('.frame').classList.add('empty'); this.remove();">
-            <span class="placeholder">photo missing</span>
-          </div>
-          <figcaption>boat</figcaption>
-        </figure>
-      </div>
-    </section>
+		<!-- contact -->
+		<section class="card" id="contact">
+			<h2 class="card-title"><span class="bowdot"></span>drop me a line</h2>
+			<ul class="mail-list">
+				<li>
+					<a class="mail-link" href="mailto:juliet@ferry.nyc">
+						<svg class="env" viewBox="0 0 24 24" aria-hidden="true">
+							<rect x="2.5" y="5" width="19" height="14" rx="3"/>
+							<path d="M3.5 7l8.5 6.5L20.5 7"/>
+						</svg>
+						<span class="mail-body">
+							<span class="mail-addr">juliet@ferry.nyc</span>
+							<span class="mail-tag">boats &amp; business</span>
+						</span>
+						<span class="go" aria-hidden="true">→</span>
+					</a>
+				</li>
+				<li>
+					<a class="mail-link" href="mailto:julietfuhr@gmail.com">
+						<svg class="env" viewBox="0 0 24 24" aria-hidden="true">
+							<rect x="2.5" y="5" width="19" height="14" rx="3"/>
+							<path d="M3.5 7l8.5 6.5L20.5 7"/>
+						</svg>
+						<span class="mail-body">
+							<span class="mail-addr">julietfuhr@gmail.com</span>
+							<span class="mail-tag">everything else</span>
+						</span>
+						<span class="go" aria-hidden="true">→</span>
+					</a>
+				</li>
+			</ul>
+		</section>
 
-    <!-- ferry easter egg: service board -->
-    <section class="card service" id="service">
-      <h2 class="card-title"><span class="bowdot"></span>service status</h2>
-      <ul class="board">
-        <li><span class="route rt-er">ER</span> <span class="dest">status — brain, caffeinated</span> <span class="status good">On&nbsp;Time</span></li>
-        <li><span class="route rt-rw">RW</span> <span class="dest">message me? — inbox</span> <span class="status warn">Delayed</span></li>
-        <li><span class="route rt-sb">SB</span> <span class="dest"> busy — side quests</span> <span class="status good">On&nbsp;Time</span></li>
-        <li><span class="route rt-sv">SV</span> <span class="dest">melatonin — sleep schedule</span> <span class="status bad">Suspended</span></li>
-      </ul>
-      <p class="micro">Next departure in <strong>4 min</strong>. Please stay inside until the ramp is down 🎀</p>
-    </section>
-  </main>
+		<!-- photos -->
+		<section class="card" id="photos">
+			<h2 class="card-title"><span class="bowdot"></span>me, probably on a boat</h2>
+			<div class="gallery">
+				<figure class="polaroid wide">
+					<div class="frame ratio-wide">
+						<img src="images/IMG_3716.jpg" alt="Julie" width="1170" height="863" loading="lazy" decoding="async"
+						     onerror="this.closest('.frame').classList.add('empty'); this.remove();">
+						<span class="placeholder">photo missing</span>
+					</div>
+					<figcaption>mcdreamy my beloved ♡</figcaption>
+				</figure>
+				<figure class="polaroid tilt-a">
+					<div class="frame">
+						<img src="images/IMG_3738.JPG" alt="Julie" width="512" height="911" loading="lazy" decoding="async"
+						     onerror="this.closest('.frame').classList.add('empty'); this.remove();">
+						<span class="placeholder">photo missing</span>
+					</div>
+					<figcaption>im a model</figcaption>
+				</figure>
+				<figure class="polaroid tilt-b">
+					<div class="frame">
+						<img src="images/IMG_3860.jpg" alt="Julie" width="674" height="911" loading="lazy" decoding="async"
+						     onerror="this.closest('.frame').classList.add('empty'); this.remove();">
+						<span class="placeholder">photo missing</span>
+					</div>
+					<figcaption>boat</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<!-- ferry easter egg: service board -->
+		<section class="card service" id="service">
+			<h2 class="card-title"><span class="bowdot"></span>service status</h2>
+			<ul class="board">
+				<li><span class="route rt-er">ER</span> <span class="dest">status — brain, caffeinated</span> <span class="status good">On&nbsp;Time</span></li>
+				<li><span class="route rt-rw">RW</span> <span class="dest">message me? — inbox</span> <span class="status warn">Delayed</span></li>
+				<li><span class="route rt-sb">SB</span> <span class="dest">busy — side quests</span> <span class="status good">On&nbsp;Time</span></li>
+				<li><span class="route rt-sv">SV</span> <span class="dest">melatonin — sleep schedule</span> <span class="status bad">Suspended</span></li>
+			</ul>
+			<p class="micro">Next departure in <strong>4 min</strong>. Please stay inside until the ramp is down 🎀</p>
+		</section>
+	</main>
 
 </div>
 
 <footer>
-  <span class="bowdot"></span>
-  made with pink paint and salt water · <a href="#about">back to top</a>
+	<span class="bowdot"></span>
+	made with pink paint and salt water · <a href="#about">back to top</a>
 </footer>
 
-<script src="js/main.js" defer></script>
-<script src="js/posts.js" defer></script>
+<script src="js/main.js?v=3" defer></script>
+<script src="js/posts.js?v=3" defer></script>
 
 </body>
 </html>
