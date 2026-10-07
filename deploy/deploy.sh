@@ -18,36 +18,37 @@ SERVICE="juliet-landing"
 
 SSH=(ssh -i "$KEY" -o ConnectTimeout=15 "$HOST")
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+INSTALL_NGINX=0
+[[ "${1:-}" == "--nginx" ]] && INSTALL_NGINX=1
 
-echo "→ syncing $REPO_ROOT → $HOST:$APP_DIR"
-"${SSH[@]}" "sudo mkdir -p $APP_DIR && sudo chown ubuntu:ubuntu $APP_DIR"
-# tar over ssh rather than rsync — rsync isn't installed on every dev box.
-# server.js only serves the public files anyway; the excludes keep the rest
-# (agent worktrees, tests, deploy scripts) off the box entirely.
-tar -C "$REPO_ROOT" \
-	--exclude='.git' \
-	--exclude='.claude' \
-	--exclude='node_modules' \
-	--exclude='*:Zone.Identifier' \
-	--exclude='deploy' \
-	--exclude='test' \
-	-czf - . | "${SSH[@]}" "tar -C $APP_DIR -xzf -"
-
-echo "→ installing systemd unit"
-tar -C "$REPO_ROOT/deploy" -czf - juliet-landing.service | "${SSH[@]}" "tar -C /tmp -xzf -"
-"${SSH[@]}" "sudo mv /tmp/juliet-landing.service /etc/systemd/system/ \
-	&& sudo systemctl daemon-reload \
-	&& sudo systemctl enable --now $SERVICE \
-	&& sudo systemctl restart $SERVICE"
-
-echo "→ waiting for the service to answer on 127.0.0.1:3000"
-"${SSH[@]}" 'for i in $(seq 1 10); do
-		curl -fsS -o /dev/null http://127.0.0.1:3000/ && echo "   up" && exit 0
-		sleep 1
+if [[ "$INSTALL_NGINX" == 1 ]]; then
+	echo "→ checking app DNS and certificate before changing nginx"
+	"${SSH[@]}" 'set -e
+		for name in ferrytimesmobile.juliet.nyc subwaysfornerds.juliet.nyc; do
+			getent ahostsv4 "$name" | awk "{print \$1}" | grep -Fxq 52.5.187.46 || {
+				echo "$name does not resolve to 52.5.187.46" >&2; exit 1;
+			}
+		done
+		CERT=/etc/letsencrypt/live/ferrytimesmobile.juliet.nyc/fullchain.pem
+		KEY=/etc/letsencrypt/live/ferrytimesmobile.juliet.nyc/privkey.pem
+		sudo test -s "$CERT" && sudo test -s "$KEY"
+		sudo openssl x509 -in "$CERT" -noout -checkhost ferrytimesmobile.juliet.nyc >/dev/null
+		sudo openssl x509 -in "$CERT" -noout -checkhost subwaysfornerds.juliet.nyc >/dev/null
+		curl -fsS -o /dev/null http://127.0.0.1:8090/
+		curl -fsS -o /dev/null http://127.0.0.1:8090/api/landings
+		curl -fsS -o /dev/null http://127.0.0.1:8091/
+		curl -fsS -o /dev/null http://127.0.0.1:8091/api/v1/stations'
+else
+	echo "→ checking both app hosts are already live before updating their links"
+	for host in ferrytimesmobile.juliet.nyc subwaysfornerds.juliet.nyc; do
+		curl -fsS --max-time 15 -o /dev/null "https://$host/" || {
+			echo "   https://$host/ is not serving yet; deploy the DNS, TLS, and nginx cutover first" >&2
+			exit 1
+		}
 	done
-	echo "   landing page never came up"; sudo journalctl -u '"$SERVICE"' -n 30 --no-pager; exit 1'
+fi
 
-if [[ "${1:-}" == "--nginx" ]]; then
+if [[ "$INSTALL_NGINX" == 1 ]]; then
 	echo "→ installing nginx config"
 	tar -C "$REPO_ROOT/deploy" -czf - nginx-juliet.nyc.conf juliet-proxy.conf \
 		| "${SSH[@]}" "tar -C /tmp -xzf -"
@@ -68,10 +69,63 @@ if [[ "${1:-}" == "--nginx" ]]; then
 		echo "   nginx reloaded"'
 fi
 
+echo "→ syncing $REPO_ROOT → $HOST:$APP_DIR"
+"${SSH[@]}" "sudo mkdir -p $APP_DIR && sudo chown ubuntu:ubuntu $APP_DIR"
+# tar over ssh rather than rsync — rsync isn't installed on every dev box.
+# server.js only serves the public files anyway; the excludes keep the rest
+# (agent worktrees, tests, deploy scripts) off the box entirely.
+tar -C "$REPO_ROOT" \
+	--exclude='.git' \
+	--exclude='.claude' \
+	--exclude='node_modules' \
+	--exclude='*:Zone.Identifier' \
+	--exclude='deploy' \
+	--exclude='test' \
+	--exclude='package-lock.json' \
+	-czf - . | "${SSH[@]}" "tar -C $APP_DIR -xzf -"
+
+echo "→ installing systemd unit"
+tar -C "$REPO_ROOT/deploy" -czf - juliet-landing.service | "${SSH[@]}" "tar -C /tmp -xzf -"
+"${SSH[@]}" "sudo mv /tmp/juliet-landing.service /etc/systemd/system/ \
+	&& sudo systemctl daemon-reload \
+	&& sudo systemctl enable --now $SERVICE \
+	&& sudo systemctl restart $SERVICE"
+
+echo "→ waiting for the service to answer on 127.0.0.1:3000"
+"${SSH[@]}" 'for i in $(seq 1 10); do
+		curl -fsS -o /dev/null http://127.0.0.1:3000/ && echo "   up" && exit 0
+		sleep 1
+	done
+	echo "   landing page never came up"; sudo journalctl -u '"$SERVICE"' -n 30 --no-pager; exit 1'
+
 echo "→ verifying from the outside"
-for path in / /blog/ /posts.json /ferryTimesMobile/ /app.js /styles.css /api/landings /lb/install.sh; do
-	code=$(curl -sS -o /dev/null -w '%{http_code}' "https://juliet.nyc${path}")
-	printf '   %-22s %s\n' "$path" "$code"
+FAILED=0
+check() {
+	local label="$1" url="$2" expected="$3"
+	local code
+	code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 "$url" || true)
+	printf '   %-42s %s\n' "$label" "$code"
+	[[ "$code" == "$expected" ]] || FAILED=1
+}
+check 'juliet landing page' 'https://juliet.nyc/' 200
+check 'juliet blog' 'https://juliet.nyc/blog/' 200
+check 'ferry subdomain' 'https://ferrytimesmobile.juliet.nyc/' 200
+check 'ferry root API' 'https://ferrytimesmobile.juliet.nyc/api/landings' 200
+check 'subways subdomain' 'https://subwaysfornerds.juliet.nyc/' 200
+check 'subways root API' 'https://subwaysfornerds.juliet.nyc/api/v1/stations' 200
+check 'lb installer' 'https://juliet.nyc/lb/install.sh' 200
+
+for redirect in \
+	'https://juliet.nyc/ferryTimesMobile/route/1?from=legacy=1|https://ferrytimesmobile.juliet.nyc/route/1?from=legacy=1' \
+	'https://juliet.nyc/subwaysForNerds/api/v1/stations?from=legacy=1|https://subwaysfornerds.juliet.nyc/api/v1/stations?from=legacy=1' \
+	'https://juliet.nyc/subwayForNerds/route?q=1|https://subwaysfornerds.juliet.nyc/route?q=1'; do
+	url="${redirect%%|*}"
+	expected="${redirect#*|}"
+	result=$(curl -sS -o /dev/null -w '%{http_code}|%{redirect_url}' --max-time 15 "$url" || true)
+	printf '   %-42s %s\n' "legacy redirect: ${url#https://juliet.nyc}" "$result"
+	[[ "$result" == "301|$expected" ]] || FAILED=1
 done
+
+[[ "$FAILED" == 0 ]] || { echo "one or more deployment checks failed" >&2; exit 1; }
 
 echo "done."

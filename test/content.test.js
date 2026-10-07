@@ -60,6 +60,25 @@ describe('live now', () => {
 		assert.deepEqual(onPage, tracked);
 	});
 
+	it('links the ferry and subway apps at their dedicated subdomains', () => {
+		const html = read('index.html');
+		assert.match(html, /href="https:\/\/ferrytimesmobile\.juliet\.nyc\/" data-project="ferry-times-mobile"/);
+		assert.match(html, /class="live-url">ferrytimesmobile\.juliet\.nyc<\/span>/);
+		assert.match(html, /href="https:\/\/subwaysfornerds\.juliet\.nyc\/" data-project="subways-for-nerds"/);
+		assert.match(html, /class="live-url">subwaysfornerds\.juliet\.nyc<\/span>/);
+
+		const projects = readJson('projects.json').projects;
+		assert.equal(projects.find((p) => p.id === 'ferry-times-mobile').url, 'https://ferrytimesmobile.juliet.nyc/');
+		assert.equal(projects.find((p) => p.id === 'ferry-times-mobile').probe, 'https://ferrytimesmobile.juliet.nyc/');
+		assert.equal(projects.find((p) => p.id === 'subways-for-nerds').url, 'https://subwaysfornerds.juliet.nyc/');
+		assert.equal(projects.find((p) => p.id === 'subways-for-nerds').probe, 'https://subwaysfornerds.juliet.nyc/');
+	});
+
+	it('points the ferry blog post at the new public URL', () => {
+		const post = readJson('posts.json').posts.find((p) => p.slug === 'ferry-board-is-live');
+		assert.ok(post?.body.some((paragraph) => paragraph.includes('[the ferry board](https://ferrytimesmobile.juliet.nyc/)')));
+	});
+
 	it('only probes https URLs', () => {
 		for (const p of readJson('projects.json').projects) {
 			assert.match(p.probe, /^https:\/\//, `${p.id} probe should be an https URL`);
@@ -68,8 +87,8 @@ describe('live now', () => {
 });
 
 describe('pages', () => {
-	// served by other apps on the box (see deploy/nginx-juliet.nyc.conf)
-	const OTHER_APPS = ['/ferryTimesMobile', '/lb/'];
+	// served by other apps through nginx on the box
+	const OTHER_APPS = ['/lb/'];
 
 	for (const [page, base] of [['index.html', '/'], ['blog/index.html', '/blog/']]) {
 		it(`${page} only references files that exist, with matching case`, () => {
@@ -92,5 +111,17 @@ describe('nginx', () => {
 		assert.ok(block, 'missing the "# >>> lb >>>" include block');
 		assert.ok(block.index > conf.indexOf('server_name juliet.nyc'), 'lb block should be inside the juliet.nyc server block');
 		assert.ok(block.index < conf.indexOf('listen 443 ssl'), 'lb block should sit above the TLS listen lines');
+	});
+
+	it('redirects legacy app paths and serves both apps from dedicated TLS hosts', () => {
+		const conf = read('deploy/nginx-juliet.nyc.conf');
+		assert.ok(conf.includes('rewrite ^/ferryTimesMobile(?:/(.*))?$ https://ferrytimesmobile.juliet.nyc/$1 permanent;'));
+		assert.ok(conf.includes('rewrite ^/subwaysForNerds(?:/(.*))?$ https://subwaysfornerds.juliet.nyc/$1 permanent;'));
+		assert.ok(conf.includes('rewrite ^/subwayForNerds(?:/(.*))?$ https://subwaysfornerds.juliet.nyc/$1 permanent;'));
+		assert.match(conf, /server_name ferrytimesmobile\.juliet\.nyc;/);
+		assert.match(conf, /server_name subwaysfornerds\.juliet\.nyc;/);
+		assert.match(conf, /location \^~ \/\.well-known\/acme-challenge\//);
+		assert.match(conf, /proxy_pass http:\/\/ferry_did;/);
+		assert.match(conf, /proxy_pass http:\/\/subways_nerds;/);
 	});
 });

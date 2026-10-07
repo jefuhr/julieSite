@@ -81,7 +81,7 @@ the landing page sidebar render from it. Add an entry and it shows up in both.
   "date": "2026-08-10",          // YYYY-MM-DD; posts sort newest first
   "tag": "ship log",             // optional pill next to the date
   "summary": "One line, shown under the headline on the landing page.",
-  "body": ["First paragraph.", "Second paragraph with [a link](/ferryTimesMobile)."]
+  "body": ["First paragraph.", "Second paragraph with [a link](https://ferrytimesmobile.juliet.nyc/)."]
 }
 ```
 
@@ -115,14 +115,19 @@ CHROME_BIN=/usr/bin/chromium npm test     # also run the headless-browser tests
 
 ## Deploying to the AWS box
 
-Already live. `juliet.nyc` runs two Node apps and one folder of static files behind
-one nginx + certbot cert:
+Already live. `juliet.nyc` and its app subdomains run behind nginx:
 
 | Path | What | Where | Service |
 |---|---|---|---|
 | `/` and `/blog/` | this landing page | port 3000 | `juliet-landing.service` |
-| `/ferryTimesMobile/` | ferry departure display | port 8090 | `nyc-ferry-did.service` |
+| `https://ferrytimesmobile.juliet.nyc/` | ferry departure display | port 8090 | `nyc-ferry-did.service` |
+| `https://subwaysfornerds.juliet.nyc/` | subway station board | port 8091 | `subways-for-nerds.service` |
 | `/lb/` | lb installer + releases | `/var/www/lb` | nginx (from [jefuhr/lb](https://github.com/jefuhr/lb)) |
+
+The old `/ferryTimesMobile/` and `/subwaysForNerds/` paths permanently redirect
+to their new hosts and preserve the remaining path and query string. Both
+subdomains need A records pointing to `52.5.187.46` and a SAN certificate before
+the Nginx config can be activated.
 
 To ship a change:
 
@@ -133,8 +138,8 @@ npm test                      # first
 ```
 
 The script tars the repo to `/opt/juliet-landing` (minus `.git`, `.claude`, `test`
-and `deploy`), installs the systemd unit, waits for the service to answer, and curls
-every app from the outside to prove nothing broke. The `--nginx` path backs up the
+and `deploy`), installs the systemd unit, waits for the service to answer, and checks
+the landing page, app hosts, and legacy redirects. The `--nginx` path backs up the
 live config first and puts it straight back if `nginx -t` fails, so a bad config
 never gets loaded. Host and key come from `DEPLOY_HOST` / `DEPLOY_KEY` (defaults:
 `ubuntu@52.5.187.46`, `~/julie.pem`).
@@ -146,8 +151,9 @@ The board was written to sit at a domain root: its HTML asks for `/app.js`,
 `/api/realtime`, `/api/display-data`, `/api/override`. Moving it to a subpath would
 have broken every one of those.
 
-Rather than patch the board, `deploy/nginx-juliet.nyc.conf` routes those root paths
-back to it, and the landing page stays out of their way — it uses `/css/`, `/js/`,
+The ferry subdomain proxies all paths to the board. The legacy juliet.nyc root
+asset/API routes remain in place for compatibility. The landing page stays out of
+their way — it uses `/css/`, `/js/`,
 `/images/`, `/blog/`, `/posts.json` and `/_api/status`. **If you add a route to the
 landing page, keep clear of the board's paths above and of `/lb/`**, or they'll break.
 

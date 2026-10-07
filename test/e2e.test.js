@@ -58,6 +58,28 @@ describe('in a real browser', { skip: !CHROME && 'set CHROME_BIN to run the brow
 		assert.doesNotMatch(dom, /data-headlines-fallback/, 'no-JS fallback should be gone');
 	});
 
+	it('landing page: live now links to the ferry app at its subdomain with a status lamp', async () => {
+		const dom = await load('/');
+		const liveList = /<ul class="live-list">([\s\S]*?)<\/ul>/.exec(dom);
+		assert.ok(liveList, 'no live now list');
+		const link = /<a class="live-link" href="https:\/\/ferrytimesmobile\.juliet\.nyc\/" data-project="ferry-times-mobile"[^>]*>([\s\S]*?)<\/a>/.exec(liveList[1]);
+		assert.ok(link, 'no Ferry Times Mobile link in live now');
+		assert.match(link[1], /class="dot"/, 'no status lamp');
+		assert.match(link[1], /class="live-name">Ferry Times Mobile<\/span>/);
+		assert.match(link[1], /class="live-url">ferrytimesmobile\.juliet\.nyc<\/span>/);
+	});
+
+	it('landing page: live now links to Subways for Nerds at its subdomain with a status lamp', async () => {
+		const dom = await load('/');
+		const liveList = /<ul class="live-list">([\s\S]*?)<\/ul>/.exec(dom);
+		assert.ok(liveList, 'no live now list');
+		const link = /<a class="live-link" href="https:\/\/subwaysfornerds\.juliet\.nyc\/" data-project="subways-for-nerds"[^>]*>([\s\S]*?)<\/a>/.exec(liveList[1]);
+		assert.ok(link, 'no Subways for Nerds link in live now');
+		assert.match(link[1], /class="dot"/, 'no status lamp');
+		assert.match(link[1], /class="live-name">Subways for Nerds<\/span>/);
+		assert.match(link[1], /class="live-url">subwaysfornerds\.juliet\.nyc<\/span>/);
+	});
+
 	it('landing page: live now has the lb download and its copy button', async () => {
 		const dom = await load('/');
 		const at = dom.indexOf('href="https://github.com/jefuhr/lb#install"');
@@ -69,6 +91,7 @@ describe('in a real browser', { skip: !CHROME && 'set CHROME_BIN to run the brow
 		assert.ok(button, 'no copy button');
 		assert.doesNotMatch(button[0], /\bhidden\b/, 'copy button should be revealed once JS runs');
 	});
+
 
 	it('blog page: every post renders newest first, anchored by its slug', async () => {
 		const dom = await load('/blog/');

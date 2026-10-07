@@ -4,8 +4,14 @@
 		{
 			"id": "ferry-times-mobile",
 			"name": "Ferry Times Mobile",
-			"url": "/ferryTimesMobile",
-			"probe": "https://juliet.nyc/ferryTimesMobile/"
+			"url": "https://ferrytimesmobile.juliet.nyc/",
+			"probe": "https://ferrytimesmobile.juliet.nyc/"
+		},
+		{
+			"id": "subways-for-nerds",
+			"name": "Subways for Nerds",
+			"url": "https://subwaysfornerds.juliet.nyc/",
+			"probe": "https://subwaysfornerds.juliet.nyc/"
 		},
 		{
 			"id": "lb",
