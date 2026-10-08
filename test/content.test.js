@@ -79,6 +79,16 @@ describe('live now', () => {
 		assert.ok(post?.body.some((paragraph) => paragraph.includes('[the ferry board](https://ferrytimesmobile.juliet.nyc/)')));
 	});
 
+	it('keeps the nycferry terminal download and install command on the landing page', () => {
+		const html = read('index.html');
+		assert.match(html, /href="https:\/\/github\.com\/jefuhr\/nycferry#install" data-project="nycferry"/);
+		assert.match(html, /data-copy="nycferry-install"/);
+		const command = /<code id="nycferry-install">([\s\S]*?)<\/code>/.exec(html);
+		assert.equal(command?.[1].replace(/<[^>]+>/g, ''), 'curl -fsSL https://juliet.nyc/nycferry/install.sh | sh');
+		assert.equal(readJson('projects.json').projects.find((p) => p.id === 'nycferry')?.probe,
+			'https://juliet.nyc/nycferry/install.sh');
+	});
+
 	it('only probes https URLs', () => {
 		for (const p of readJson('projects.json').projects) {
 			assert.match(p.probe, /^https:\/\//, `${p.id} probe should be an https URL`);

@@ -59,13 +59,14 @@ and again when you come back to it.
 
 ### Downloads
 
-Under the live links, **downloads** has [lb](https://github.com/jefuhr/lb) — a boat
-that sails across your terminal. The row links to the install instructions on GitHub,
-its lamp watches the installer the box serves at `https://juliet.nyc/lb/install.sh`,
-and underneath is the one-liner in a little terminal with a copy button:
+Under the live links, **downloads** has [lb](https://github.com/jefuhr/lb) and
+[nycferry](https://github.com/jefuhr/nycferry). Each row links to its install
+instructions on GitHub, its lamp watches the installer served by the box, and
+underneath is a one-liner in a little terminal with a copy button:
 
 ```sh
 curl -fsSL https://juliet.nyc/lb/install.sh | sh
+curl -fsSL https://juliet.nyc/nycferry/install.sh | sh
 ```
 
 ## The blog

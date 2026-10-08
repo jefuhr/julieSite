@@ -18,6 +18,12 @@
 			"name": "lb installer",
 			"url": "https://github.com/jefuhr/lb#install",
 			"probe": "https://juliet.nyc/lb/install.sh"
+		},
+		{
+			"id": "nycferry",
+			"name": "nycferry installer",
+			"url": "https://github.com/jefuhr/nycferry#install",
+			"probe": "https://juliet.nyc/nycferry/install.sh"
 		}
 	]
 }

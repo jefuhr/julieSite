@@ -16,6 +16,7 @@ const { ROOT, startServer } = require('./helpers');
 
 const CHROME = process.env.CHROME_BIN;
 const INSTALL = 'curl -fsSL https://juliet.nyc/lb/install.sh | sh';
+const NYCFERRY_INSTALL = 'curl -fsSL https://juliet.nyc/nycferry/install.sh | sh';
 
 const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'posts.json'), 'utf8')).posts;
 const newestFirst = posts.slice().sort((a, b) => b.date.localeCompare(a.date));
@@ -92,6 +93,17 @@ describe('in a real browser', { skip: !CHROME && 'set CHROME_BIN to run the brow
 		assert.doesNotMatch(button[0], /\bhidden\b/, 'copy button should be revealed once JS runs');
 	});
 
+	it('landing page: nycferry has a matching download and copyable install command', async () => {
+		const dom = await load('/');
+		const at = dom.indexOf('href="https://github.com/jefuhr/nycferry#install"');
+		assert.ok(at > -1, 'no link to the nycferry install instructions');
+		assert.ok(at > dom.indexOf('downloads') && at < dom.indexOf('from the blog'), 'nycferry should sit in downloads');
+		const code = /<code id="nycferry-install">([\s\S]*?)<\/code>/.exec(dom);
+		assert.equal(code?.[1].replace(/<[^>]+>/g, ''), NYCFERRY_INSTALL, 'install one-liner missing or changed');
+		const button = /<button[^>]*data-copy="nycferry-install"[^>]*>/.exec(dom);
+		assert.ok(button, 'no nycferry copy button');
+		assert.doesNotMatch(button[0], /\bhidden\b/, 'nycferry copy button should be revealed once JS runs');
+	});
 
 	it('blog page: every post renders newest first, anchored by its slug', async () => {
 		const dom = await load('/blog/');

@@ -104,8 +104,8 @@
 				     entry to projects.json so the status dot works -->
 			</ul>
 
-			<!-- downloads: the link goes to the install docs, the lamp watches
-			     the installer the box serves at /lb/install.sh -->
+			<!-- downloads: links go to install docs, lamps watch the installers
+			     the box serves at /lb/install.sh and /nycferry/install.sh -->
 			<p class="dock-label">downloads</p>
 			<ul class="live-list">
 				<li>
@@ -127,6 +127,27 @@
 							<button class="copy" type="button" data-copy="lb-install" aria-live="polite" hidden>copy</button>
 						</div>
 						<code id="lb-install">curl -fsSL https://juliet.nyc/lb/install.sh <span class="nowrap">| sh</span></code>
+					</div>
+				</li>
+				<li>
+					<a class="live-link" href="https://github.com/jefuhr/nycferry#install" data-project="nycferry" target="_blank" rel="noopener">
+						<span class="dot" data-state="unknown" aria-hidden="true"></span>
+						<span class="live-body">
+							<span class="live-name">nycferry</span>
+							<span class="live-desc">an NYC Ferry sails across your terminal</span>
+						</span>
+						<span class="live-state get">
+							<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.5v6.8M3 5.6l3 3 3-3M2.2 10.6h7.6"/></svg>
+							download
+						</span>
+					</a>
+					<div class="term">
+						<div class="term-bar">
+							<span class="lights" aria-hidden="true"><span></span><span></span><span></span></span>
+							<span class="term-os">macOS · Linux</span>
+							<button class="copy" type="button" data-copy="nycferry-install" aria-live="polite" hidden>copy</button>
+						</div>
+						<code id="nycferry-install">curl -fsSL https://juliet.nyc/nycferry/install.sh <span class="nowrap">| sh</span></code>
 					</div>
 				</li>
 			</ul>

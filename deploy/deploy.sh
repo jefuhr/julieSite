@@ -114,6 +114,7 @@ check 'ferry root API' 'https://ferrytimesmobile.juliet.nyc/api/landings' 200
 check 'subways subdomain' 'https://subwaysfornerds.juliet.nyc/' 200
 check 'subways root API' 'https://subwaysfornerds.juliet.nyc/api/v1/stations' 200
 check 'lb installer' 'https://juliet.nyc/lb/install.sh' 200
+check 'nycferry installer' 'https://juliet.nyc/nycferry/install.sh' 200
 
 for redirect in \
 	'https://juliet.nyc/ferryTimesMobile/route/1?from=legacy=1|https://ferrytimesmobile.juliet.nyc/route/1?from=legacy=1' \
