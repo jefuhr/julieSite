@@ -59,6 +59,17 @@ describe('in a real browser', { skip: !CHROME && 'set CHROME_BIN to run the brow
 		assert.doesNotMatch(dom, /data-headlines-fallback/, 'no-JS fallback should be gone');
 	});
 
+	it('landing page: ko-fi support sits above the blog and replaces the service and promo cards', async () => {
+		const dom = await load('/');
+		const support = /<section[^>]*id="donate"[\s\S]*?<\/section>/.exec(dom);
+		assert.ok(support, 'no donation card');
+		assert.ok(dom.indexOf('id="donate"') < dom.indexOf('data-headlines'), 'donation card should precede the blog');
+		assert.match(support[0], /href="https:\/\/ko-fi\.com\/julietnyc"/);
+		assert.match(support[0], /buy me a coffee/);
+		assert.doesNotMatch(dom, /id="service"|PROMOCODE|penguin2026/);
+		assert.match(dom, /href="https:\/\/github\.com\/jefuhr\/nycferry#install"/);
+	});
+
 	it('landing page: live now links to the ferry app at its subdomain with a status lamp', async () => {
 		const dom = await load('/');
 		const liveList = /<ul class="live-list">([\s\S]*?)<\/ul>/.exec(dom);

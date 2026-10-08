@@ -177,6 +177,7 @@ Rollback: the nginx configs are backed up on the box as
 | Photos | drop files in `images/` — see `images/README.md` |
 | Live project links | `index.html` → `.live-list` **and** `projects.json` |
 | Downloads | `index.html` → the `.live-list` under "downloads" (plus `projects.json` for the lamp) |
+| Donations | `index.html` → `#donate`, above the blog card; links to Ko-fi |
 | Blog posts | `posts.json` |
 | Colors | `css/style.css` → `:root` for the day palette, the `prefers-color-scheme: dark` block right under it for night |
 
@@ -187,8 +188,7 @@ Rollback: the nginx configs are backed up on the box as
   water, and the ferry's portholes light up.
 - Going between the landing page and the blog, the kitty and the harbor stay put while
   the rest crossfades (a cross-document view transition, where the browser supports it).
-- The "service status" card is a joke departure board using real route codes (ER / RW / SB / SV).
-- The sidebar ends in a punch-out ferry ticket.
+- A coffee cup and bow sit above the blog card, linking to [Julie's Ko-fi](https://ko-fi.com/julietnyc).
 - 404s say you missed the boat.
 - Under `prefers-reduced-motion` the ferry still makes her crossing, just slowly (90s) and
   on a flat sea; everything else holds still.
