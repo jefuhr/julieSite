@@ -69,12 +69,45 @@ Rendering happens in the browser, so with JavaScript off the blog page points at
 
 ## Deploying to the AWS box
 
-Already live. `juliet.nyc` runs two Node apps behind one nginx + certbot cert:
+This checkout describes the landing page and Ferry Kitty routes. Production also
+hosts other applications behind nginx; preserve their configuration when deploying.
 
 | Path | App | Port | Service |
 |---|---|---|---|
 | `/` and `/blog/` | this landing page | 3000 | `juliet-landing.service` |
-| `/ferryTimesMobile/` | ferry departure display | 8090 | `nyc-ferry-did.service` |
+| `https://ferrykitty.juliet.nyc/` | Ferry Kitty canonical host | 8090 | `nyc-ferry-did.service` |
+| `/ferryTimesMobile/` | Ferry Kitty legacy entry point | 8090 | `nyc-ferry-did.service` |
+
+### Ferry Kitty domain setup
+
+The landing page, blog, and health probe use `https://ferrykitty.juliet.nyc/`.
+The domain was enabled on October 18, 2026 with its own automatically renewed TLS
+certificate. The old hostname remains available. To recreate the setup:
+
+1. Add an `A` record for `ferrykitty.juliet.nyc` pointing to `52.5.187.46`.
+2. Install `deploy/nginx-ferrykitty.conf` as a **new** enabled nginx site at
+   `/etc/nginx/sites-available/ferrykitty.juliet.nyc`. Run `sudo nginx -t` before
+   reloading nginx. The new site forwards every path to the existing app on port 8090.
+3. After public DNS resolves, run
+   `sudo certbot --nginx -d ferrykitty.juliet.nyc --redirect` to issue its own
+   certificate and enable HTTPS. Preserve Certbot's changes on subsequent deploys.
+4. Verify the new HTTPS homepage, `/api/landings`, `/sw.js`, and the assets
+   referenced by the homepage before publishing the landing-page changes.
+
+The existing production hostname is `ferrytimesmobile.juliet.nyc` (plural).
+Keep it and `/ferryTimesMobile/` available for existing links and installed web apps.
+Browser preferences and offline caches are isolated by origin: they remain on the
+old hostname and do not automatically appear on the new one. Native app IDs,
+service names, data directories, and the existing blog post anchor stay unchanged.
+
+Production has additional sites and landing-page entries absent from this checkout.
+Apply this rename to the current production files without replacing those additions.
+Do not use `./deploy/deploy.sh --nginx` for this domain change: its shared-site
+template predates the production subdomains and other application routes.
+The separate Ferry Kitty site avoids overwriting them or the existing shared
+certificate used by the old ferry hostname and Subways for Nerds.
+
+### General landing-page deployment
 
 To ship a change:
 

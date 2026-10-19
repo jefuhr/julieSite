@@ -157,7 +157,7 @@ const server = http.createServer(async (req, res) => {
     return send(res, 405, 'Method Not Allowed', { allow: 'GET, HEAD', 'content-type': 'text/plain' });
   }
 
-  // NOTE: deliberately /_api/, not /api/ — the ferry board owns /api/* at the
+  // NOTE: deliberately /_api/, not /api/ — Ferry Kitty owns /api/* at the
   // root of juliet.nyc (landings, alerts, realtime), so this must not collide.
   if (pathname === '/_api/status') {
     try {

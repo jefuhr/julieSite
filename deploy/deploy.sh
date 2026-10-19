@@ -65,4 +65,11 @@ for path in / /blog/ /ferryTimesMobile/ /app.js /styles.css /api/landings; do
   printf '   %-22s %s\n' "$path" "$code"
 done
 
+echo "→ verifying Ferry Kitty"
+for path in / /api/landings /sw.js; do
+  curl --fail --silent --show-error --connect-timeout 10 --max-time 30 \
+    -o /dev/null "https://ferrykitty.juliet.nyc${path}"
+  printf '   https://ferrykitty.juliet.nyc%s OK\n' "$path"
+done
+
 echo "done."
